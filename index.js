@@ -35,7 +35,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         await client.connect();
-        console.log("Connected database");
+        console.log("Database Connected");
         const database = client.db("dreamGlass");
         const userCollection = database.collection("users");
         const productsCollection = database.collection("products");
@@ -175,7 +175,7 @@ run().catch(console.dir);
 
 // ROOT API
 app.get("/", (req, res) => {
-    res.send("Dream Glass server running");
+    res.send("Dream Car server running");
 });
 
 // console output
