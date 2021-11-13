@@ -4,16 +4,16 @@ const { MongoClient } = require("mongodb");
 // mongo db id
 const ObjectId = require("mongodb").ObjectId;
 
-// corros conncetion
+// cors conncetion
 const cors = require("cors");
 
 // for env file support
 require("dotenv").config();
 
-// our main app
+// main app
 const app = express();
 
-// port define
+// define the port
 const port = process.env.PORT || 5000;
 
 // middleware
@@ -42,7 +42,7 @@ async function run() {
         const reviewsCollection = database.collection("reviews");
         const ordersCollection = database.collection("orders");
 
-        // User POST API
+        // users POST API
         app.post("/users", async (req, res) => {
             const user = req.body;
             const result = await userCollection.insertOne(user);
@@ -50,14 +50,14 @@ async function run() {
             //console.log("hitting product post api", user);
         });
 
-        // User GET API
+        // users GET API
         app.get("/users", async (req, res) => {
             const cursor = userCollection.find({});
             const result = await cursor.toArray();
             res.json(result);
         });
 
-        // User GET API by email
+        // users GET API by email
         app.get("/users/:email", async (req, res) => {
             const email = req.params.email;
             const query = { email: email };
@@ -65,7 +65,7 @@ async function run() {
             res.json(user);
         });
 
-        // USER Admin Role UPDATE PUT API
+        // users PUT API to update the the role as admin
         app.put("/users/:email", async (req, res) => {
             const email = req.params.email;
             const data = req.body.role;
@@ -75,25 +75,24 @@ async function run() {
                 { upsert: true }
             );
             res.json(order);
-            // console.log("Order put api hit", id, data);
         });
 
-        // Product POST API
+        // products POST API
         app.post("/products", async (req, res) => {
             const product = req.body;
             const result = await productsCollection.insertOne(product);
             res.json(result);
-            console.log("hitting product post api", product);
+            // console.log("hitting product post api", product);
         });
 
-        // Product GET API
+        //products GET API
         app.get("/products", async (req, res) => {
             const cursor = productsCollection.find({});
             const result = await cursor.toArray();
             res.json(result);
         });
 
-        // Product GET API BY ID
+        // products GET API BY ID
         app.get("/products/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -101,16 +100,15 @@ async function run() {
             res.json(result);
         });
 
-        // Product DELETE API
+        // products DELETE API
         app.delete("/products/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const product = await productsCollection.deleteOne(query);
             res.json(product);
-            //console.log('API hit', id);
         });
 
-        // Reviews POST API
+        // reviews POST API
         app.post("/reviews", async (req, res) => {
             const review = req.body;
             const result = await reviewsCollection.insertOne(review);
@@ -118,14 +116,14 @@ async function run() {
             //console.log("hitting review post api", review);
         });
 
-        // Reviews GET API
+        // reviews GET API
         app.get("/reviews", async (req, res) => {
             const cursor = reviewsCollection.find({});
             const result = await cursor.toArray();
             res.json(result);
         });
 
-        // Order POST API
+        // orders POST API
         app.post("/orders", async (req, res) => {
             const order = req.body;
             const result = await ordersCollection.insertOne(order);
@@ -149,7 +147,7 @@ async function run() {
             res.json(result);
         });
 
-        // Order DELETE API
+        // Orders DELETE API
         app.delete("/orders/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -158,7 +156,7 @@ async function run() {
             //console.log('API hit', id);
         });
 
-        // ORDER STATUS UPDATE PUT API
+        // orders PUT API to update the status of the order
         app.put("/orders/:id", async (req, res) => {
             const id = req.params.id;
             const data = req.body.status;
@@ -168,7 +166,6 @@ async function run() {
                 { upsert: true }
             );
             res.json(order);
-            // console.log("Order put api hit", id, data);
         });
     } finally {
         //await client.close();
@@ -178,10 +175,10 @@ run().catch(console.dir);
 
 // ROOT API
 app.get("/", (req, res) => {
-    res.send("Running Shop Grid Root API on Browser");
+    res.send("Dream Glass server running");
 });
 
 // console output
 app.listen(port, () => {
-    console.log("Running Shop Grid Server in console", port);
+    console.log("App running on port", port);
 });
